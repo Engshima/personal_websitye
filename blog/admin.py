@@ -14,4 +14,15 @@ admin.site.register(Article,ArticleAdmin)
 class CategoryAdmin(admin.ModelAdmin):
   list_display = ['title','cover']
     
-admin.site.register(Category,CategoryAdmin)      
+admin.site.register(Category,CategoryAdmin)   
+
+
+class TagAdmin(admin.ModelAdmin):
+  list_display = ['title','published_at']   
+  
+admin.site.register(Tag, TagAdmin)  
+  
+class CommentAdmin(admin.ModelAdmin):
+  list_display = ['name','email']   
+  
+admin.site.register(Comment, CommentAdmin)    
