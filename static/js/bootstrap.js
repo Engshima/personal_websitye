@@ -67,7 +67,7 @@
     subClass.prototype.constructor = subClass;
     subClass.__proto__ = superClass;
   }
-
+  
   /**
    * --------------------------------------------------------------------------
    * Bootstrap (v4.1.0): util.js
@@ -122,6 +122,7 @@
       $$$1.fn.emulateTransitionEnd = transitionEndEmulator;
       $$$1.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent();
     }
+    
     /**
      * --------------------------------------------------------------------------
      * Public Util Api

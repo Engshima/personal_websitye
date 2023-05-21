@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
+
 class BlogDetailSerizlizer(serializers.ModelSerializer):
     class Meta:
        model = Article
@@ -9,9 +10,5 @@ class BlogDetailSerizlizer(serializers.ModelSerializer):
     
     
     
-class CommentSerializer(serializers.ModelSerializer): 
-    
-    class  Meta:
-       model = Comment
-       fields = ['name','email','message']
+
        

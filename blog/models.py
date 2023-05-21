@@ -25,6 +25,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.first_name + "" + self.user.last_name
     
+    def __str__(self):
+        return f"{self.user}"
 
 class Article(models.Model):
     title = models.CharField(max_length=128, blank=False, null=False)
@@ -35,7 +37,8 @@ class Article(models.Model):
         default=datetime.now, blank=False)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name="category")
     tag = models.ManyToManyField("Tag", verbose_name=_("تگ ها"), related_name="tags", blank=True)
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey("UserProfile", on_delete=models.CASCADE)
+    comment = models.ManyToManyField("Comment", verbose_name=_("کامنت ها"), null=True, blank=True)
     class Meta:
           managed = True
           verbose_name = 'مقاله ها'
@@ -77,12 +80,16 @@ class Tag(models.Model):
      def get_absolute_url(self):
             return reverse("blog_detail", kwargs={"slug": self.slug}) 
 class Comment(models.Model):
+    
+      id = models.BigAutoField(_("شماره کامنت"), primary_key=True)
       post = models.ForeignKey("Article", verbose_name=_("مقاله"), related_name="comments",on_delete=models.CASCADE) 
       name = models.CharField(_("نام کاربر"), max_length=254)
       email = models.EmailField(_("آدرس الکترونیکی"), max_length=254)
       message = models.TextField(_("متن نظر"))
       image  = models.ImageField(null=True, blank=False,upload_to='files/article_cover/', height_field=None, width_field=None, max_length=100)
       date =  models.DateField(_("تاریخ انتشار"), auto_now=False, auto_now_add=True)
+      active = models.BooleanField(_("فعال"),default=True)
+      parent = models.ForeignKey('self', verbose_name=_("کامنت والد"), on_delete=models.CASCADE, null=True, blank=True)
       
       class Meta:
           managed = True
@@ -91,5 +98,8 @@ class Comment(models.Model):
           
       def  __str__(self):
            return self.email
+      
+      def __str__(self):
+            return f"{self.name}" 
           
              
