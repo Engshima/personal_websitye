@@ -23,6 +23,6 @@ class TagAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagAdmin)  
   
 class CommentAdmin(admin.ModelAdmin):
-  list_display = ['name','email']   
+  list_display = ['name','email','parent']   
   
 admin.site.register(Comment, CommentAdmin)    

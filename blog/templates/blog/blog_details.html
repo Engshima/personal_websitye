@@ -33,12 +33,12 @@
                                 <li>|</li>
                                 <li><i class="zmdi zmdi-time"></i>زمان : <span>{{blog.created_time}}</span></li>
                             </ul>
-                            <p>{{blog.content}}</p>
-                            <p>{{blog.content}}</p>
+                            <p>{{blog.content|safe}}</p>
+                            <p>{{blog.content|safe}}</p>
                             <blockquote>
-                                <p>{{blog.content}}</p>
+                                <p>{{blog.content|safe}}</p>
                             </blockquote>
-                            <p>{{blog.content}}</p>
+                            <p>{{blog.content|safe}}</p>
                         </div>
                     </div>
                     
@@ -61,12 +61,21 @@
                                 </div>
                               
                                 <div class="container">
+                                   
                                     <button data-target="#reply{{cm.name}}"  class="right-btn-re"  data-toggle="collapse" ><i class="fa fa-reply" aria-hidden="true">Reply</i></button><br>
                                     <form id="commentrespondform" class="comment-form-respond row" method="post">
-                                        {% csrf_token %} 
+                                      {% csrf_token %} 
+                                      
+                                      {% if parent_comment_id %}
+                                          <input type="hidden" name="parent_id" value="{{parent_comment_id}}">
+                                      {% endif %}
+                                        
                                      <div class="collapse" id="reply{{cm.name}}" >
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="name" placeholder="Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="email_com" class="form-control" name="email" placeholder="Your Email" type="email">
                                         </div>
                                         <div class="form-group">
                                             <textarea class="form-control" name="message"  placeholder="Your Reply" id="" cols="15" rows="4"></textarea><br>
@@ -86,8 +95,10 @@
                     <div class="comment-respond-box">
                         <h3>Leave your comment </h3>
                         <div class="comment-respond-form">
-                            <form id="commentrespondform" class="comment-form-respond row" method="post">
+                            <form  id="commentrespondform" class="comment-form-respond row" method="post">
+                                
                                 {% csrf_token %}
+                                    
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <input id="name_com" class="form-control" name="name" placeholder="Name" type="text">
@@ -114,12 +125,12 @@
             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-8 col-12 blog-sidebar">
                 <div class="right-side-blog">
                     <h3>Search</h3>
-                    <div class="blog-search-form">
-                        <input name="search" placeholder="Search blog" type="text">
-                        <button class="search-btn">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
+                    <form method="GET" >
+                      <div class="blog-search-form">
+                        <input name="search" placeholder="Search blog" type="text" />
+                        <button class="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                   </form>
                     <h3>دسته بندی ها</h3>
                     <div class="blog-categories">
                         <ul>

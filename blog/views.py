@@ -41,32 +41,42 @@ class BlogdetailPageView(APIView):
     def get(self, request, pk): 
        
         blog = get_object_or_404(Article, pk=pk)
+        search= Article.objects.filter(title__icontains = 'برنامه').values()  
         serializer = BlogDetailSerizlizer(blog, many=True)
         categories = Category.objects.all()
         recent = Article.objects.all().order_by("-created_time")
         tag = Tag.objects.all()
         comment = Comment.objects.all()
-        return Response({'serializer': serializer, 'blog': blog, 'categories': categories, 'recent': recent, 'tag': tag, 'comment': comment})
+        return Response({'serializer': serializer, 'blog': blog, 'categories': categories, 'recent': recent, 'tag': tag, 'comment': comment, 'search': search})
 
     def post(self, request, pk):
         global message
         article = Article.objects.get(pk=pk)
-        comment=Comment.objects.filter(pk=pk)
-        if comment=="":
-           name = request.data["name"] 
-           email = request.data["email"]
-           message = request.data["message"]
-           Comment.objects.create(post=article, name=name,
-                               email=email, message=message).save
-          
-        else:
-            parent= Comment.objects.get(pk=pk)
-            name = request.data["name"] 
+        parent_comment_id = request.POST.get('parent_id')
+        parent_comment = None
+        if parent_comment_id:
+           try:
+               parent_comment = Comment.objects.get(id=parent_comment_id)
+           except Comment.DoesNotExist:
+               pass
+           
+        if not parent_comment :
+            email = request.data["email"]
             message = request.data["message"]
-            Comment.objects.create(post=article, message=message,name=name ,parent=parent).save
+            name = request.data["name"]
+            Comment.objects.create(post=article, name=name,
+                               email=email, message=message).save       
+           
+        else:
                
+            message = request.data["message"]
+            email = request.data["email"]
+            name = request.data["name"]
+            Comment.objects.create(post=article, name=name,
+                               message=message,email=email,parent=parent_comment).save 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        print(request.data)  # which will print json format of your data
+     
+       
                 
         
             
@@ -82,5 +92,8 @@ class blog_tag(TemplateView):
     template_name = 'blog/blog_list.html'
 
 
+
+
 class ContactPage(TemplateView):
     template_name = "blog/contact_us.html"
+

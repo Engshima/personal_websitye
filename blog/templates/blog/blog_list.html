@@ -30,7 +30,7 @@
                     <span>{{ blog.created_time }}</span>
                   </li>
                 </ul>
-                <p>{{ blog.content|truncatewords:50 }}</p>
+                <p>{{ blog.content|safe|truncatewords:20 }}</p>
                 {% comment %} <p>Sed semper orci sit amet porta placerat. Etiam quis finibus eros.</p> {% endcomment %}
                 <a class="btn btn-lg btn-circle btn-outline-new-white" href="{% url 'blog:blog_detail' blog.id %}">Read More</a>
               </div>
