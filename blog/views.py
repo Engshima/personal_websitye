@@ -53,7 +53,7 @@ class BlogdetailPageView(APIView):
         global message
         article = Article.objects.get(pk=pk)
         parent_comment_id = request.POST.get('parent_id')
-        parent_comment = None
+        parent_comment = Comment.objects.get(id=parent_comment_id) if parent_comment_id else None
         if parent_comment_id:
            try:
                parent_comment = Comment.objects.get(id=parent_comment_id)
@@ -65,7 +65,7 @@ class BlogdetailPageView(APIView):
             message = request.data["message"]
             name = request.data["name"]
             Comment.objects.create(post=article, name=name,
-                               email=email, message=message).save       
+                               email=email, message=message,parent=parent_comment).save       
            
         else:
                
@@ -73,7 +73,7 @@ class BlogdetailPageView(APIView):
             email = request.data["email"]
             name = request.data["name"]
             Comment.objects.create(post=article, name=name,
-                               message=message,email=email,parent=parent_comment).save 
+                               message=message,email=email).save 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
      
        

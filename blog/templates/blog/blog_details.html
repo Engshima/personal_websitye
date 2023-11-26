@@ -66,9 +66,7 @@
                                     <form id="commentrespondform" class="comment-form-respond row" method="post">
                                       {% csrf_token %} 
                                       
-                                      {% if parent_comment_id %}
-                                          <input type="hidden" name="parent_id" value="{{parent_comment_id}}">
-                                      {% endif %}
+                                      
                                         
                                      <div class="collapse" id="reply{{cm.name}}" >
                                         <div class="form-group">
@@ -81,6 +79,7 @@
                                             <textarea class="form-control" name="message"  placeholder="Your Reply" id="" cols="15" rows="4"></textarea><br>
                                         </div>
                                         <div>
+                                            
                                             <button class="right-btn-re" ><i class="fa fa-reply" aria-hidden="true">Add Reply</i></button><br>
                                         </div>
                                      </div>
@@ -113,7 +112,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <input type="hidden" name="parent" value="">
+                                    {% if parent_comment_id %}
+                                    <input type="hidden" name="parent_id" value="{{parent_comment_id}}">
+                                   {% endif %}
                                     <button class="btn btn-submit">Submit comment</button>
                                 </div>
                             </form>

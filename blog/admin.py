@@ -23,6 +23,8 @@ class TagAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagAdmin)  
   
 class CommentAdmin(admin.ModelAdmin):
-  list_display = ['name','email','parent']   
+  list_display = ['name','email','parent','active']  
+  list_filter = ['active'] 
+  list_editable = ['active']
   
 admin.site.register(Comment, CommentAdmin)    
